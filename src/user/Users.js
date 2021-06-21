@@ -27,14 +27,12 @@ class Users extends Component {
         <div className="card col-md-4" key={i}>
 
           <img
-            className="card-img-top"
-            src={DefaultProfileImage}
-            alt={user.plate}
-            style={{
-              width: "100%",
-              height: "15vw",
-              objectFit: "cover"
-            }}
+              style={{height: "auto", width: "auto"}}
+              className="img-thumbnail"
+              src={`${process.env.REACT_APP_API_URL}/user/photo/${user._id}`}
+              //apply default pic if none found
+              onError={i => (i.target.src = `${DefaultProfileImage}`)}
+              alt={user.plate}
           />
 
           <div className="card-body">
