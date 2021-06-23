@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { isAuthenticated } from "../auth";
-import { read, update } from "./apiUser";
+import { read, update, updateUser } from "./apiUser";
 import { Redirect } from "react-router-dom";
 import DefaultProfileImage from "../images/default-avatar.png";
 
@@ -16,11 +16,12 @@ class EditProfile extends Component {
       redirectToProfile: false,
       error: "", // used for update using backend validations
       fileSize: 0,
-      loading: false
+      loading: false,
+      about: ""
     };
 }
 
-  init = (userId) => {
+  init = (userId) => { // init populate with current user data from backend
     const token = isAuthenticated().token;
       read(userId, token).then(data => {
         if (data.error) {
@@ -30,7 +31,8 @@ class EditProfile extends Component {
             id: data._id,
             plate: data.plate,
             email: data.email,
-            error: ""
+            error: "",
+            about: data.about
            });
         }
       });
@@ -49,15 +51,15 @@ class EditProfile extends Component {
       return false;
     }
     if(plate.length === 0) {
-      this.setState({error: "Name is required"});
+      this.setState({error: "Name is required", loading: false});
       return false;
     }
     if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      this.setState({error: "Email is not valid format"});
+      this.setState({error: "Email is not valid format", loading: false});
       return false;
     }
     if(password.length >=1 && password.length <=5) {
-      this.setState({error: "Password must be at least 6 characters"});
+      this.setState({error: "Password must be at least 6 characters", loading: false});
       return false;
     }
     return true;
@@ -81,14 +83,15 @@ class EditProfile extends Component {
 
       update(userId, token, this.userData).then(data => {
         if(data.error) this.setState({ error: data.error });
-        else this.setState({
-          redirectToProfile: true
+        else
+        updateUser(data, () => {
+          this.setState({redirectToProfile: true});
         });
       });
     }
   };
 
-  signupForm = (plate, email, password) => (
+  signupForm = (plate, email, password, about) => (
     <form>
     <div className="form-group">
       <label className="text-muted">Profile Photo</label>
@@ -118,6 +121,15 @@ class EditProfile extends Component {
         />
       </div>
       <div className="form-group">
+        <label className="text-muted">Car Info</label>
+        <textarea
+          onChange={this.handleChange("about")}
+          type="text"
+          className="form-control"
+          value={about}
+        />
+      </div>
+      <div className="form-group">
         <label className="text-muted">Password</label>
         <input
           onChange={this.handleChange("password")}
@@ -133,7 +145,7 @@ class EditProfile extends Component {
   );
 
   render() {
-    const { id, plate, email, password, redirectToProfile, error, loading } = this.state;
+    const { id, plate, email, password, redirectToProfile, error, loading, about } = this.state;
 
     if(redirectToProfile) {
         return <Redirect to={`/user/${id}`}/>
@@ -168,7 +180,7 @@ class EditProfile extends Component {
             alt={plate}
         />
 
-        {this.signupForm(plate, email, password)}
+        {this.signupForm(plate, email, password, about)}
       </div>
     );
   }
