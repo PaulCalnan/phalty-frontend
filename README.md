@@ -1,70 +1,84 @@
-# Getting Started with Create React App
+# Final General Assembly Project
+# Phalty - A place where cars can talk!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A social application where users sign up as their vehicle.
 
-## Available Scripts
+Users sign up using their vehicle registration plates, and then can communicate with other cars by simply remembering the numberplate of another vehicle.
 
-In the project directory, you can run:
+For example, someone witnesses another persons car involved in an accident.
+That user can note down the plate and use the app to forward the info to the owner, just like putting a note under a windscreen wiper.
 
-### `yarn start`
+This web application is live, but far from finished.
+Currently, the only features working are...
+Sign Up, Sign In, Create Post, Delete/Edit Post, Delete/Edit User.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Both the front end and back end API are deployed on Digital Ocean.
+- [Digital Ocean](https://www.digitalocean.com/)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Phalty still needs the following to be implemented...
 
-### `yarn test`
+### Future features marked if implemented:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [ ]  User comments on posts (implemented in back end but not in front)
+- [ ]  Search Posts by User
+- [ ]  Regex validations for user registration plate
+- [ ]  Pagination
+- [ ]  Further Styling
+- [ ]  Admin user for front and back
 
-### `yarn build`
+#### Built with a MERN stack:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+ - MongoDB
+ - Express
+ - React
+ - Node
+ - Material Design Bootstrap
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Known Bugs:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+ Some redirects not firing.
+ For example, user update page on click should redirect to updated post,
+ instead remains stuck on "loading..." feature.
+ Refreshing homepage shows user update has been received by backend.
+ npm package react-router-dom is responsible for routes and uses the redirect method redirectToProfile.
+ Some of the code responsible for redirect...
 
-### `yarn eject`
+ ```javascript
+ update(userId, token, this.userData).then(data => {
+        if(data.error) this.setState({ error: data.error });
+        else
+        updateUser(data, () => {
+          this.setState({redirectToProfile: true});
+        });
+      });
+ ```
+ This will be corrected during further feature implementations...
+##
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+![app demo](/phalty-screenshot.png)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Requirements
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Internet browser - Preferably Chrome.
+- MongoDB server set to localhost 8080 by default for backend
+- Front end can be served locally on localhost 3000
 
-## Learn More
+## Installation
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+$ git clone https://github.com/PaulCalnan/phalty-backend.git
+$ git clone https://github.com/PaulCalnan/phalty-frontend.git
+$ cd into phalty project
+$ npm install
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+[Or try it right now here!.. ](http://161.35.112.143/)
 
-### Code Splitting
+[Backend API routes can be seen here.. ](http://161.35.112.143/api)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+## Whr to from here?
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This current version will be re-built and further refined into a
+react native version that will have further features like maps with pin.
